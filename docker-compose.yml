@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+
+  db-news-management:
+    image: postgres:15.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_DB=news_management
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres -d news_management" ]
+      interval: 10s
+      timeout: 5s
+    networks:
+      - backend
+    ports:
+      - "5432:5432"
+
+  news-service:
+    image: news-service
+    restart: always
+    build:
+      dockerfile: news-service/Dockerfile
+    depends_on:
+      db-news-management:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-news-management:5432/news_management
+    networks:
+      - backend
+    ports:
+      - "8080:8080"
+
+  user-service:
+    image: user-service
+    restart: always
+    build:
+      dockerfile: user-service/Dockerfile
+    depends_on:
+      db-news-management:
+        condition: service_healthy
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db-news-management:5432/news_management
+    networks:
+      - backend
+    ports:
+      - "8081:8081"
+
+  redis-cache:
+    image: redis:7.2-alpine
+    restart: always
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+    networks:
+      - backend
+    ports:
+      - "6379:6379"
+
+networks:
+  backend:
+    driver: bridge
