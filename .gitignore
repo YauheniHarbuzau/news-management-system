@@ -3,6 +3,13 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+logging-starter/build
+exception-handler-starter/build
+news-service/build
+user-service/build
+logs
+news-service/logs
+user-service/logs
 
 ### IntelliJ IDEA ###
 .idea

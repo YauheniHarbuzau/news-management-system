@@ -1,0 +1,47 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'io.freefair.lombok' version '6.5.1'
+}
+
+group 'ru.clevertec'
+version '1.0'
+
+java {
+    sourceCompatibility = JavaLanguageVersion.of(17)
+    targetCompatibility = JavaLanguageVersion.of(17)
+}
+
+repositories {
+    mavenCentral()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = project.name
+            version = version
+
+            from components.java
+        }
+    }
+}
+
+dependencies {
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor:3.2.1"
+
+    implementation "org.springframework.boot:spring-boot-starter-web:3.2.1"
+
+    implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0"
+
+    testImplementation "org.springframework.boot:spring-boot-starter-test:3.2.1"
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.named('build') {
+    finalizedBy('publishToMavenLocal')
+}

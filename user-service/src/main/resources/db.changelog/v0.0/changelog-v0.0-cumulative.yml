@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog/v0.0/ddl/2024-02-15--01-create-roles-table.sql
+  - include:
+      file: db.changelog/v0.0/ddl/2024-02-15--01-create-users-table.sql
+  - include:
+      file: db.changelog/v0.0/dml/2024-02-15--01-insert-into-roles-table.sql
+  - include:
+      file: db.changelog/v0.0/dml/2024-02-15--01-insert-into-users-table.sql

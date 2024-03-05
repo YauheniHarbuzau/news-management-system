@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: news-service
+  profiles:
+    active: dev
+
+client:
+  user-service:
+    url: http://user-service:8081/api/v1/users
+
+server:
+  port: 8080
